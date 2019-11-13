@@ -41,7 +41,7 @@ const Column = props => {
 			Swal.fire({
 				title: 'Game Over',
 				text: `${
-					winner === 'TIE' ? 'Game Ties' : `${players[turn].name}'s win!`
+					winner === 'TIE' ? "It's a tie" : `${players[turn].name} Won!`
 				}`,
 				icon: 'success',
 				confirmButtonText: 'New Game'
