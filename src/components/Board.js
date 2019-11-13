@@ -13,10 +13,26 @@ const BoardRoot = styled.div`
 	display: flex;
 `
 
+const BoardInfo = styled.div`
+	margin-bottom: 3rem;
+	display: flex;
+	align-items: center;
+`
+
+const ActiveSpan = styled.span(
+	props => `
+	height: 2rem;
+	width: 2rem;
+	background-color: ${props.color};
+	border-radius: 50%;
+	margin-left: 0.5rem;
+`
+)
+
 const Board = props => {
 	const players = useContext(PlayerContext)
 	const [PLAYER_1] = Object.keys(players)
-	// console.log(players)
+
 	// Standard rows and columns, can be later customized by taking user input and passing it appropriately.
 	const [rows, columns] = [6, 7]
 
@@ -24,7 +40,6 @@ const Board = props => {
 	const initialBoard = [...Array(rows)].map(() => new Array(columns).fill(null))
 	const [board, setBoard] = useState(initialBoard)
 	const [turn, setTurn] = useState(PLAYER_1)
-	// console.log(board)
 
 	const BoardDOM = []
 	for (let i = 0; i < columns; i++) {
@@ -44,7 +59,12 @@ const Board = props => {
 
 	return (
 		<BoardContainer>
-			<span>{`${players[turn].name}'s turn`}</span>
+			<BoardInfo>
+				<h2>
+					{`${players[turn].name}'s turn`} - {'  '}
+				</h2>
+				<ActiveSpan color={players[turn].color} />
+			</BoardInfo>
 			<BoardRoot>{BoardDOM}</BoardRoot>
 		</BoardContainer>
 	)

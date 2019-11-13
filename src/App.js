@@ -20,12 +20,12 @@ export const Heading = styled.h1`
 
 // Some enums for players, we can instead take user input about color and name but this works for a simple case.
 const PLAYER_1 = {
-	color: 'red',
+	color: '#EE2737FF',
 	name: 'A'
 }
 
 const PLAYER_2 = {
-	color: 'blue',
+	color: '#078282FF',
 	name: 'B'
 }
 
