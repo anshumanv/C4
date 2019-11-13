@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Swal from 'sweetalert2'
 import { checkWin } from '../utils/CheckWin'
 import PlayerContext from '../utils/PlayerContext'
+import Element from './Element'
 
 const ColumnRoot = styled.div`
 	display: flex;
@@ -14,37 +15,28 @@ const ColumnRoot = styled.div`
 	}
 `
 
-const Element = styled.span(
-	props => `
-	height: 2rem;
-	width: 2rem;
-	background-color: ${(props.players[props.player] &&
-		props.players[props.player].color) ||
-		'white'};
-	padding: 1rem;
-	margin: 0.5rem;
-	border-radius: 50%;
-	transition: all 0.5s ease;
-`
-)
-
 const Column = props => {
 	const { rows, columns, colIndex, turn, board, setBoard, setTurn } = props
-	// read players information using context api
+
+	// read players information using context api.
 	const players = useContext(PlayerContext)
+
+	// Function to handle turns by players.
 	const makeTurn = turn => {
 		const colVal = board.map(col => col[colIndex]).reverse()
 
 		const present = colVal.indexOf(null)
 
+		// Column is full.
 		if (present < 0) return
 
-		// create a copy of out initial state for mutation
+		// create a copy of out initial state for mutation.
 		const newBoard = [...board]
 		newBoard[rows - present - 1][colIndex] = turn
 
 		// Check win
 		const winner = checkWin(newBoard)
+		// If winner exists fire an alert.
 		if (winner) {
 			Swal.fire({
 				title: 'Game Over',
@@ -73,12 +65,7 @@ const Column = props => {
 	const ColumnDOM = []
 	for (let i = 0; i < rows; i++) {
 		ColumnDOM.push(
-			<Element
-				players={players}
-				rowIndex={i}
-				player={board[i][colIndex]}
-				key={i}
-			/>
+			<Element players={players} player={board[i][colIndex]} key={i} />
 		)
 	}
 

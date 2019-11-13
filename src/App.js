@@ -15,7 +15,7 @@ const Root = styled.div`
 `
 
 export const Heading = styled.h1`
-	margin-bottom: 5rem;
+	margin-bottom: 3rem;
 `
 
 // Some enums for players, we can instead take user input about color and name but this works for a simple case.

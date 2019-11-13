@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import PlayerContext from '../utils/PlayerContext'
 import Column from './Column'
 
+// Can be rather replaced by a generic flex container HOC.
 const BoardContainer = styled.div`
 	display: flex;
 	flex-direction: column;
@@ -29,7 +30,7 @@ const ActiveSpan = styled.span(
 `
 )
 
-const Board = props => {
+const Board = () => {
 	const players = useContext(PlayerContext)
 	const [PLAYER_1] = Object.keys(players)
 
@@ -38,6 +39,7 @@ const Board = props => {
 
 	// init our initial board state
 	const initialBoard = [...Array(rows)].map(() => new Array(columns).fill(null))
+
 	const [board, setBoard] = useState(initialBoard)
 	const [turn, setTurn] = useState(PLAYER_1)
 
@@ -60,9 +62,7 @@ const Board = props => {
 	return (
 		<BoardContainer>
 			<BoardInfo>
-				<h2>
-					{`${players[turn].name}'s turn`} - {'  '}
-				</h2>
+				<h2>{`${players[turn].name}'s turn`} -</h2>
 				<ActiveSpan color={players[turn].color} />
 			</BoardInfo>
 			<BoardRoot>{BoardDOM}</BoardRoot>
