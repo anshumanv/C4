@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import Swal from 'sweetalert2'
@@ -70,6 +71,16 @@ const Column = props => {
 	}
 
 	return <ColumnRoot onClick={() => makeTurn(turn)}>{ColumnDOM}</ColumnRoot>
+}
+
+Column.propTypes = {
+	rows: PropTypes.number.isRequired,
+	columns: PropTypes.number.isRequired,
+	colIndex: PropTypes.number.isRequired,
+	turn: PropTypes.string.isRequired,
+	board: PropTypes.array.isRequired,
+	setBoard: PropTypes.func.isRequired,
+	setTurn: PropTypes.func.isRequired
 }
 
 export default Column
