@@ -24,42 +24,58 @@ const Column = props => {
 
 	// Function to handle turns by players.
 	const makeTurn = turn => {
-		const colVal = board.map(col => col[colIndex]).reverse()
+		let colVal = board.map(col => col[colIndex]).reverse()
 
 		const present = colVal.indexOf(null)
 
 		// Column is full.
 		if (present < 0) return
+		let newBoard = [...board]
+		Swal.fire({
+			title: 'Move type?',
+			text: 'Do you want to drop or place your coin?',
+			icon: 'question',
+			showCancelButton: true,
+			confirmButtonText: 'Place it!'
+		}).then(res => {
+			console.log(res)
+			if (res.hasOwnProperty('value')) {
+				// create a copy of out initial state for mutation.
+				newBoard[rows - present - 1][colIndex] = turn
+			} else {
+				// console.log(colVal)
+				colVal = [...colVal.slice(1, colVal.length), null]
 
-		// create a copy of out initial state for mutation.
-		const newBoard = [...board]
-		newBoard[rows - present - 1][colIndex] = turn
+				for (let i = 0; i < rows; i++) {
+					newBoard[i][colIndex] = colVal[rows - i - 1]
+				}
+				console.log({ newBoard, colVal }, rows - present - 1)
+			}
+			// Check win
+			const winner = checkWin(newBoard)
+			// If winner exists fire an alert.
 
-		// Check win
-		const winner = checkWin(newBoard)
-		// If winner exists fire an alert.
-		if (winner) {
-			Swal.fire({
-				title: 'Game Over',
-				text: `${
-					winner === 'TIE' ? "It's a tie" : `${players[turn].name} Won!`
-				}`,
-				icon: 'success',
-				confirmButtonText: 'New Game'
-			}).then(() => {
-				const initialBoard = [...Array(rows)].map(() =>
-					new Array(columns).fill(null)
-				)
-				setTurn(Object.keys(players)[0])
-				return setBoard(initialBoard)
-			})
-		}
+			if (winner) {
+				Swal.fire({
+					title: 'Game Over',
+					text: `${winner === 'TIE' ? "It's a tie" : `${winner} Won!`}`,
+					icon: 'success',
+					confirmButtonText: 'New Game'
+				}).then(() => {
+					const initialBoard = [...Array(rows)].map(() =>
+						new Array(columns).fill(null)
+					)
+					setTurn(Object.keys(players)[0])
+					return setBoard(initialBoard)
+				})
+			}
 
-		// flip turns
-		setTurn(turn === 'PLAYER_1' ? 'PLAYER_2' : 'PLAYER_1')
+			// flip turns
+			setTurn(turn === 'PLAYER_1' ? 'PLAYER_2' : 'PLAYER_1')
 
-		// update the overall board state
-		setBoard(newBoard)
+			// update the overall board state
+			setBoard(newBoard)
+		})
 	}
 
 	// Building DOM of a single column
